@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { HiBars3BottomRight } from "react-icons/hi2";
 import { CgClose } from "react-icons/cg";
+import { FaUserCircle } from "react-icons/fa";
 
 const navLinks = [
   { id: 1, url: "/Beranda", level: "Beranda" },
@@ -31,6 +32,7 @@ function Navbar() {
   return (
     <nav className="fixed w-full h-[12vh] bg-white/90 backdrop-blur-md z-[1000] shadow-md">
       <div className="flex items-center h-full justify-between w-[90%] xl:w-[80%] mx-auto">
+        
         {/* Logo */}
         <Image
           src="/images/logo-SiPintar.png"
@@ -63,8 +65,18 @@ function Navbar() {
           })}
         </div>
 
+        {/* Profile Icon (pojok kanan) */}
+        <div className="hidden lg:flex items-center">
+          <Link href="/profile">
+            <FaUserCircle className="w-9 h-9 text-gray-700 hover:text-purple-600 transition-colors cursor-pointer" />
+          </Link>
+        </div>
+
         {/* Mobile Menu Icon */}
-        <div className="block lg:hidden">
+        <div className="block lg:hidden flex items-center gap-3">
+          <Link href="/profile">
+            <FaUserCircle className="w-8 h-8 text-gray-700 hover:text-purple-600 transition-colors cursor-pointer" />
+          </Link>
           <HiBars3BottomRight
             className="w-9 h-9 text-gray-800 cursor-pointer hover:text-purple-600 transition-colors"
             onClick={openNav}

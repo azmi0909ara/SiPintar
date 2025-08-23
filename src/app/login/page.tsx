@@ -9,7 +9,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(""); // hanya dipakai untuk admin
+  const [password, setPassword] = useState(""); // hanya untuk admin
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -32,6 +32,16 @@ export default function LoginPage() {
         try {
           const adminLogin = await signInWithEmailAndPassword(auth, email, password);
           if (adminLogin.user) {
+            // Simpan data admin ke localStorage
+            localStorage.setItem(
+              "user",
+              JSON.stringify({
+                uid: adminLogin.user.uid,
+                email: adminLogin.user.email,
+                role: "admin",
+              })
+            );
+
             setPopupMessage("🎉 Selamat datang Admin di SiPintar!");
             setShowPopup(true);
 
@@ -53,6 +63,11 @@ export default function LoginPage() {
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
+        const userData = querySnapshot.docs[0].data();
+
+        // ✅ Simpan data user ke localStorage
+        localStorage.setItem("user", JSON.stringify(userData));
+
         setPopupMessage("🎉 Selamat datang di SiPintar!");
         setShowPopup(true);
 
@@ -94,13 +109,13 @@ export default function LoginPage() {
 
           <div>
             <label className="block mb-2 font-semibold text-white text-lg">
-              Password (Admin Only)
+              Password 
             </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password (opsional untuk user)"
+              placeholder="Password "
               className="w-full border border-white/50 rounded-2xl px-5 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-blue-300 bg-white/20 text-white placeholder-white/70 transition transform hover:scale-105"
             />
           </div>
