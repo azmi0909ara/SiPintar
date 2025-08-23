@@ -1,9 +1,33 @@
-"use client"
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { db } from "@/app/lib/firebaseConfig";
+import { collection, query, orderBy, limit, getDocs } from "firebase/firestore";
 
 const HeroContent = () => {
   const router = useRouter();
+  const [announcement, setAnnouncement] = useState<string | null>(null);
+
+  // Ambil pengumuman terbaru
+  useEffect(() => {
+    const fetchAnnouncement = async () => {
+      try {
+        const q = query(
+          collection(db, "pengumuman"),
+          orderBy("createdAt", "desc"),
+          limit(1)
+        );
+        const snap = await getDocs(q);
+        if (!snap.empty) {
+          const latest = snap.docs[0].data();
+          setAnnouncement(latest.content);
+        }
+      } catch (err) {
+        console.error("Gagal ambil pengumuman:", err);
+      }
+    };
+    fetchAnnouncement();
+  }, []);
 
   return (
     <div className="text-center md:text-left">
@@ -17,21 +41,35 @@ const HeroContent = () => {
           Belajar Pintar,
         </span>
         <br />
-        Raih Prestasi<br />
+        Raih Prestasi
+        <br />
         Bersama{" "}
         <span className="text-yellow-400 drop-shadow-md">SiPintar</span>
       </h1>
 
+      {/* Pengumuman terbaru */}
+      {announcement && (
+        <div
+          data-aos="fade-down"
+          data-aos-delay="200"
+          className="mt-4 bg-gradient-to-r from-purple-500/20 to-blue-500/20 px-4 py-3 rounded-lg border border-white/20 shadow-md"
+        >
+          <p className="text-yellow-300 font-semibold text-lg animate-bounce">
+            📢 Pengumuman: {announcement}
+          </p>
+        </div>
+      )}
+
       {/* Deskripsi */}
       <p
         data-aos="fade-left"
-        data-aos-delay="200"
+        data-aos-delay="300"
         className="mt-6 max-w-2xl mx-auto md:mx-0 text-sm md:text-lg text-white/80 leading-relaxed"
       >
-        Platform pembelajaran online yang dirancang untuk membantu siswa meraih prestasi optimal. 
-        Dengan metode belajar interaktif dan materi berkualitas,{" "}
-        <span className="font-semibold text-green-300">SiPintar</span> adalah partner terbaik 
-        dalam perjalanan pendidikan Anda.
+        Platform pembelajaran online yang dirancang untuk membantu siswa meraih
+        prestasi optimal. Dengan metode belajar interaktif dan materi berkualitas,{" "}
+        <span className="font-semibold text-green-300">SiPintar</span> adalah
+        partner terbaik dalam perjalanan pendidikan Anda.
       </p>
 
       {/* Tombol Aksi */}
@@ -40,7 +78,7 @@ const HeroContent = () => {
         <button
           onClick={() => router.push("/materi")}
           data-aos="zoom-in"
-          data-aos-delay="300"
+          data-aos-delay="400"
           className="px-7 py-3 rounded-lg font-medium text-white bg-green-500 hover:bg-green-600 shadow-lg hover:shadow-green-400/50 transform hover:scale-105 transition-all duration-300"
         >
           🚀 Mulai Belajar
@@ -50,7 +88,7 @@ const HeroContent = () => {
         <button
           onClick={() => router.push("/kuis")}
           data-aos="zoom-in"
-          data-aos-delay="400"
+          data-aos-delay="500"
           className="px-7 py-3 rounded-lg font-medium text-white bg-red-500 hover:bg-red-600 shadow-lg hover:shadow-red-400/50 transform hover:scale-105 transition-all duration-300"
         >
           🎯 Mulai Latihan

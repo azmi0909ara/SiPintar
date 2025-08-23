@@ -2,8 +2,8 @@
 
 export default function TentangPage() {
   return (
-    <div className="min-h-screen w-full bg-white text-black p-6 md:p-12 lg:p-20 pt-[14vh]">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className="min-h-screen w-full bg-white text-black p-6 md:p-12 lg:p-20 pt-30">
+      <div className="max-w-4xl mx-auto space-y-8 pt-10">
         <h1 className="text-3xl font-bold text-center">Tentang SiPintar</h1>
         <p>
           <strong>SiPintar</strong> adalah platform pembelajaran digital (e-learning) 
