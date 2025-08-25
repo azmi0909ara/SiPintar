@@ -1,29 +1,30 @@
-"use client"
+"use client";
 import React, { useEffect } from "react";
-import Hero from "./Hero/Hero";
-import About from "./About/About";
-import Course from "./Course/Course";
-import Feature from "./Feature/Feature";
-import Review from "./Review/Review";
-import Article from "./Article/Article";
+import Hero from "@/Components/Home/Hero/Hero";
+import About from "@/Components/Home/About/About";
+import Course from "@/Components/Home/Course/Course";
+import Feature from "@/Components/Home/Feature/Feature";
+import Review from "@/Components/Home/Review/Review";
+import Article from "@/Components/Home/Article/Article";
 
-import AOS from 'aos';
-import 'aos/dist/aos.css'; // You can also use <link> for styles
+import "aos/dist/aos.css";
 
 function Home() {
-
   useEffect(() => {
-    const initAOS = async ()=>{
-      await import('aos')
-      AOS.init({
-        duration: 1000,
-        easing: "ease",
-        once:true,
-        anchorPlacement: "top-bottom",
-      });
+    const initAOS = async () => {
+      if (typeof window !== "undefined") {
+        const AOS = (await import("aos")).default;
+        AOS.init({
+          duration: 1000,
+          easing: "ease",
+          once: true,
+          anchorPlacement: "top-bottom",
+        });
+      }
     };
     initAOS();
-  },[])
+  }, []);
+
   return (
     <div>
       <Hero />
@@ -32,7 +33,6 @@ function Home() {
       <Feature />
       <Review />
       <Article />
-      
     </div>
   );
 }
