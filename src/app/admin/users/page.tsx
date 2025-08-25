@@ -33,7 +33,6 @@ export default function UsersPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("namaAsc"); // default sort
 
-  // Fetch data
   const fetchUsers = async () => {
     setLoading(true);
     const querySnapshot = await getDocs(collection(db, "registrasi"));
@@ -59,20 +58,17 @@ export default function UsersPage() {
     fetchUsers();
   }, []);
 
-  // Delete
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "registrasi", id));
     fetchUsers();
   };
 
-  // Edit
   const handleEdit = (user: User) => {
     setSelectedUser(user);
     setFormData(user);
     setIsEditing(true);
   };
 
-  // Save
   const handleSave = async () => {
     if (!formData) return;
     const userRef = doc(db, "registrasi", formData.id);
@@ -90,7 +86,6 @@ export default function UsersPage() {
     fetchUsers();
   };
 
-  // Filter + Sort
   const filteredUsers = users
     .filter((u) =>
       u.namaAnak.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -106,35 +101,35 @@ export default function UsersPage() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
+      {/* Sidebar responsive */}
       <Sidebar />
 
       {/* Main Content */}
-      <div className="flex-1 p-8">
+      <div className="flex-1 p-4 sm:p-8 overflow-x-hidden">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-8">
-          <div className="p-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl shadow-lg">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-6 sm:mb-8">
+          <div className="p-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl shadow-lg flex-shrink-0">
             <FiUsers className="text-3xl" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
               Manajemen Pengguna
             </h1>
-            <p className="text-gray-500">Kelola data anak & wali</p>
+            <p className="text-gray-500 text-sm sm:text-base">Kelola data anak & wali</p>
           </div>
         </div>
 
         {/* Search & Sort */}
-        <div className="text-black flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="text-black flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
           <input
             type="text"
             placeholder="Cari nama atau email..."
-            className="border rounded-lg px-4 py-2 flex-1 focus:ring-2 focus:ring-indigo-500"
+            className="border rounded-lg px-4 py-2 flex-1 focus:ring-2 focus:ring-indigo-500 w-full"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <select
-            className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500"
+            className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 w-full sm:w-auto"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
           >
@@ -153,12 +148,12 @@ export default function UsersPage() {
             <table className="min-w-full text-sm text-left text-gray-600">
               <thead className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-base">
                 <tr>
-                  <th className="px-6 py-3">Nama Anak</th>
-                  <th className="px-6 py-3">Email</th>
-                  <th className="px-6 py-3">Wali</th>
-                  <th className="px-6 py-3">Role</th>
-                  <th className="px-6 py-3">Password</th>
-                  <th className="px-6 py-3">Aksi</th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-3">Nama Anak</th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-3">Email</th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-3">Wali</th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-3">Role</th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-3">Password</th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-3">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -169,16 +164,16 @@ export default function UsersPage() {
                       idx % 2 === 0 ? "bg-gray-50" : "bg-white"
                     } hover:bg-indigo-50 transition`}
                   >
-                    <td className="px-6 py-3">{user.namaAnak}</td>
-                    <td className="px-6 py-3">{user.email}</td>
-                    <td className="px-6 py-3">{user.wali}</td>
-                    <td className="px-6 py-3">{user.role}</td>
-                    <td className="px-6 py-3">
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">{user.namaAnak}</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">{user.email}</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">{user.wali}</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">{user.role}</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">
                       {user.password ? "••••••" : "-"}
                     </td>
-                    <td className="px-6 py-3 flex gap-3">
+                    <td className="px-4 py-2 sm:px-6 sm:py-3 flex flex-wrap gap-2">
                       <button
-                        className="px-3 py-1 bg-gray-200 rounded-lg hover:bg-gray-300"
+                        className="px-3 py-1 bg-gray-200 rounded-lg hover:bg-gray-300 text-xs sm:text-sm"
                         onClick={() => {
                           setSelectedUser(user);
                           setIsEditing(false);
@@ -187,13 +182,13 @@ export default function UsersPage() {
                         Preview
                       </button>
                       <button
-                        className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                        className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-xs sm:text-sm"
                         onClick={() => handleEdit(user)}
                       >
                         Edit
                       </button>
                       <button
-                        className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                        className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 text-xs sm:text-sm"
                         onClick={() => handleDelete(user.id)}
                       >
                         Hapus
@@ -210,18 +205,18 @@ export default function UsersPage() {
         <AnimatePresence>
           {selectedUser && (
             <motion.div
-              className="fixed inset-0 flex items-center justify-center backdrop-blur-md bg-black/40 z-50"
+              className="fixed inset-0 flex items-center justify-center backdrop-blur-md bg-black/40 z-50 px-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
               <motion.div
-                className="bg-white/90 backdrop-blur-xl border border-white/30 shadow-2xl rounded-2xl w-full max-w-lg p-6"
+                className="bg-white/90 backdrop-blur-xl border border-white/30 shadow-2xl rounded-2xl w-full max-w-full sm:max-w-lg p-4 sm:p-6"
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 50, opacity: 0 }}
               >
-                <h2 className="text-xl font-semibold mb-4 text-indigo-700">
+                <h2 className="text-lg sm:text-xl font-semibold mb-4 text-indigo-700">
                   {isEditing ? "Edit Pengguna" : "Detail Pengguna"}
                 </h2>
 
@@ -242,7 +237,7 @@ export default function UsersPage() {
                         </label>
                         <input
                           type={field.type}
-                          className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
+                          className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
                           value={(formData as any)[field.key]}
                           onChange={(e) =>
                             setFormData({
@@ -255,7 +250,7 @@ export default function UsersPage() {
                     ))}
                   </div>
                 ) : (
-                  <div className="space-y-2 text-gray-700">
+                  <div className="space-y-2 text-gray-700 text-sm sm:text-base">
                     <p>
                       <strong>Nama Anak:</strong> {selectedUser.namaAnak}
                     </p>
@@ -281,23 +276,23 @@ export default function UsersPage() {
                   </div>
                 )}
 
-                <div className="flex justify-end gap-3 mt-6">
+                <div className="flex flex-wrap justify-end gap-2 mt-4 sm:mt-6">
                   <button
-                    className="text-black px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+                    className="text-black px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 text-sm sm:text-base"
                     onClick={() => setSelectedUser(null)}
                   >
                     Tutup
                   </button>
                   {isEditing ? (
                     <button
-                      className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:opacity-90"
+                      className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:opacity-90 text-sm sm:text-base"
                       onClick={handleSave}
                     >
                       Simpan
                     </button>
                   ) : (
                     <button
-                      className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg hover:opacity-90"
+                      className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg hover:opacity-90 text-sm sm:text-base"
                       onClick={() => setIsEditing(true)}
                     >
                       Edit

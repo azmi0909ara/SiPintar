@@ -185,58 +185,55 @@ export default function MateriPage() {
       {/* Header dengan logo dan navigasi */}
       <div className="flex items-center justify-between px-8 py-4"></div>
 
-      {/* Hamburger Menu Button */}
-      {!isOverlayVisible && !isReadingMode && (
-        <div className="absolute top-32 left-3" ref={menuRef}>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsMenuOpen(!isMenuOpen);
-            }}
-            className="flex flex-col space-y-1.5 p-2 hover:bg-gray-100 rounded-md transition-colors"
-            aria-label="Toggle menu"
-          >
-            <div className={`w-6 h-0.5 bg-gray-700 transition-transform duration-300 ${isMenuOpen ? "rotate-45 translate-y-2" : ""}`}></div>
-            <div className={`w-6 h-0.5 bg-gray-700 transition-opacity duration-300 ${isMenuOpen ? "opacity-0" : ""}`}></div>
-            <div className={`w-6 h-0.5 bg-gray-700 transition-transform duration-300 ${isMenuOpen ? "-rotate-45 -translate-y-2" : ""}`}></div>
-          </button>
 
-          {isMenuOpen && (
-            <div className="absolute top-12 left-0 bg-white border-2 border-black border-opacity-45 rounded-lg shadow-lg py-2 min-w-48 z-10 max-h-96 overflow-y-auto">
-              {/* Sekolah Dasar */}
-              <div className="px-4 py-2 border-b border-gray-200">
-                <h3 className="text-lg font-bold text-gray-800 mb-2">Pilih Kelas</h3>
-                <h4 className="text-lg font-bold text-gray-800 mb-2">Sekolah Dasar</h4>
-                <div className="space-y-1">
-                  {[1, 2, 3, 4, 5, 6].map((kelas) => (
-                    <label key={kelas} className="flex items-center space-x-2 text-sm text-gray-600">
-                      <input 
-                        type="checkbox" 
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2" 
-                        checked={selectedClasses.includes(kelas)}
-                        onChange={() => handleClassToggle(kelas)}
-                      />
-                      <span>Kelas {kelas}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
 
       {/* Main Content */}
       {!isOverlayVisible && !isReadingMode && (
         <div className="flex-1 mt-20 px-8">
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-gray-700">Pilih materi pembelajaran yang ingin Anda pelajari.</h1>
-            {selectedClasses.length > 0 && (
-              <p className="text-gray-500 mt-2">
-                Menampilkan materi untuk kelas: {selectedClasses.sort().join(', ')}
-              </p>
-            )}
-          </div>
+  <h1 className="text-2xl font-bold text-gray-700">
+    Pilih materi pembelajaran yang ingin Anda pelajari.
+  </h1>
+
+  {/* Tombol Filter di bawah heading */}
+  <div className="mt-4 flex justify-center" ref={menuRef}>
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        setIsMenuOpen(!isMenuOpen);
+      }}
+      className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition"
+      aria-label="Filter"
+    >
+      <span>🔍 Filter</span>
+    </button>
+
+    {isMenuOpen && (
+      <div className="absolute mt-2 bg-white border border-gray-300 rounded-xl shadow-lg py-4 px-4 min-w-52 z-10 max-h-96 overflow-y-auto">
+        <h3 className="text-lg font-bold text-gray-800 mb-2">Pilih Kelas</h3>
+        <div className="space-y-2">
+          {[1, 2, 3, 4, 5, 6].map((kelas) => (
+            <label key={kelas} className="flex items-center space-x-2 text-sm text-gray-700">
+              <input 
+                type="checkbox" 
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2" 
+                checked={selectedClasses.includes(kelas)}
+                onChange={() => handleClassToggle(kelas)}
+              />
+              <span>Kelas {kelas}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+
+  {selectedClasses.length > 0 && (
+    <p className="text-gray-500 mt-3">
+      Menampilkan materi untuk kelas: {selectedClasses.sort().join(', ')}
+    </p>
+  )}
+</div>
 
           {filteredCards.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16">

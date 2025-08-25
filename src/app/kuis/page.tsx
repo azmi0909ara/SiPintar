@@ -30,7 +30,7 @@ export default function QuizPage() {
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 flex items-center justify-center p-6">
       <div className="max-w-5xl w-full">
         {/* Header */}
-        <h1 className="text-4xl md:text-5xl font-extrabold text-white text-center mb-12 drop-shadow-lg">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-white text-center mb-12 drop-shadow-lg pt-25">
           🎯 Pilih Modul Latihan Kuis
         </h1>
 

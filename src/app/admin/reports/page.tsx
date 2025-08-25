@@ -132,7 +132,7 @@ export default function ReportsPage() {
 
           <div className="space-y-4">
             {announcements.map((a) => (
-              <div key={a.id} className="p-4 bg-gray-100 rounded-lg">
+              <div key={a.id} className="text-black p-4 bg-gray-100 rounded-lg">
                 <h3 className="font-bold">{a.title}</h3>
                 <p>{a.content}</p>
               </div>
