@@ -24,12 +24,14 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 
-let analytics = null;
-
+let analytics: any = null;
 if (typeof window !== "undefined") {
-  isSupported().then((yes) => {
-    if (yes) {
+  isSupported().then((supported) => {
+    if (supported) {
       analytics = getAnalytics(app);
+      console.log("Firebase Analytics initialized");
+    } else {
+      console.log("Firebase Analytics not supported in this environment");
     }
   });
 }
