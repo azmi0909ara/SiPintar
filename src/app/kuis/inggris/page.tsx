@@ -35,10 +35,13 @@ export default function QuizInggris() {
     setAnswers(updatedAnswers);
   };
 
-  const handleFinish = () => {
-    const score = answers.filter(
-      (ans, idx) => ans === shuffledQuestions[idx]?.answer
-    ).length;
+ const handleFinish = () => {
+    // ✅ Validasi apakah semua soal sudah terjawab
+    const isAllAnswered = answers.every((ans) => ans !== null);
+    if (!isAllAnswered) {
+      alert("⚠️ Harap jawab semua soal terlebih dahulu sebelum menyelesaikan kuis.");
+      return;
+    }
 
     const newAttempt = attempts + 1;
     setAttempts(newAttempt);

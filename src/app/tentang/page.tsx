@@ -7,7 +7,7 @@ export default function TentangPage() {
         <h1 className="text-3xl font-bold text-center">Tentang SiPintar</h1>
         <p>
           <strong>SiPintar</strong> adalah platform pembelajaran digital (e-learning) 
-          yang dirancang khusus untuk anak-anak Sekolah Dasar kelas 1 hingga 3. 
+          yang dirancang khusus untuk anak-anak Sekolah Dasar kelas 1 hingga 6. 
           Kami percaya bahwa setiap anak berhak mendapatkan pengalaman belajar 
           yang menyenangkan, mudah dipahami, dan bisa diakses kapan saja serta di mana saja.
         </p>
@@ -20,7 +20,7 @@ export default function TentangPage() {
         <h2 className="text-2xl font-semibold">🎓 Apa yang Ada di SiPintar?</h2>
         <ul className="list-disc list-inside space-y-2">
           <li>
-            <strong>Materi Pembelajaran Lengkap</strong> – Disusun sesuai kurikulum untuk kelas 1, 2, dan 3 SD dengan bahasa sederhana, penjelasan, contoh, dan ringkasan.
+            <strong>Materi Pembelajaran Lengkap</strong> – Disusun sesuai kurikulum untuk kelas 1, 2, hingga 6 SD dengan bahasa sederhana, penjelasan, contoh, dan ringkasan.
           </li>
           <li>
             <strong>Kuis dan Latihan Soal</strong> – Anak dapat mengerjakan soal interaktif untuk melatih pemahaman.
@@ -38,14 +38,14 @@ export default function TentangPage() {
           <li><strong>Mudah Dipahami</strong> – Bahasa sederhana dengan contoh sehari-hari.</li>
           <li><strong>Menyenangkan</strong> – Belajar tidak membosankan karena ada kuis dan latihan soal.</li>
           <li><strong>Bermanfaat</strong> – Membantu anak memahami pelajaran sejak dini.</li>
-          <li><strong>Terpercaya</strong> – Materi sesuai kurikulum SD kelas 1–3.</li>
+          <li><strong>Terpercaya</strong> – Materi sesuai kurikulum SD kelas 1–6.</li>
         </ul>
 
         <h2 className="text-2xl font-semibold">🎯 Visi dan Misi</h2>
         <p><strong>Visi:</strong> Menjadi platform e-learning yang membantu anak-anak Indonesia belajar dengan cara yang menyenangkan, sederhana, dan bermakna.</p>
         <p><strong>Misi:</strong></p>
         <ul className="list-disc list-inside space-y-2">
-          <li>Menyediakan materi pembelajaran sesuai kurikulum untuk kelas 1–3 SD.</li>
+          <li>Menyediakan materi pembelajaran sesuai kurikulum untuk kelas 1–6 SD.</li>
           <li>Membuat proses belajar lebih interaktif dan mudah diakses.</li>
           <li>Mendukung peran orang tua dan guru dalam mendampingi anak belajar.</li>
           <li>Membangun generasi cerdas sejak usia dini melalui teknologi pendidikan.</li>
