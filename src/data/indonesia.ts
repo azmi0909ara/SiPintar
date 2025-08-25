@@ -3,7 +3,7 @@ export const indonesiaQuestions = [
   // --- Soal Indonesia 1 ---
   {
     id: 1,
-    question: "Ketika Boni menendang bola ke ember, terdengar bunyi…",
+    question: "Ketika Boni menendang bola ke ember, terdengar bunyi suara bunyi. maka yang kita dengar adalah...",
     options: ["Gambar", "Bunyi", "Warna", "Huruf"],
     answer: "Bunyi",
   },
