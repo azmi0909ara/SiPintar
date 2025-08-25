@@ -9,7 +9,7 @@ export default function RootLayoutClient({ children }: { children: ReactNode }) 
   const pathname = usePathname();
 
   // list route yang navbarnya TIDAK ingin ditampilkan
-  const hideNavbarRoutes = ["/Dashboard", "/login", "/register", "/admin", "/admin/users", "/admin/reports"];
+  const hideNavbarRoutes = ["/Dashboard", "/login", "/register", "/admin", "/admin/users", "/admin/reports" ,"/kuis/indonesia", "/kuis/inggris", "/kuis/ppkn"];
 
   const showNavbar = !hideNavbarRoutes.includes(pathname);
 

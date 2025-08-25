@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { db } from "../lib/firebaseConfig";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { collection, addDoc, Timestamp, updateDoc } from "firebase/firestore";
 
 export default function RegisterPage() {
   const [namaAnak, setNamaAnak] = useState("");
@@ -46,16 +46,32 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      await addDoc(collection(db, "registrasi"), {
+      const docRef = await addDoc(collection(db, "registrasi"), {
         namaAnak,
         tanggalLahir: Timestamp.fromDate(new Date(tanggalLahir)),
         wali,
         nomor,
         email,
         alamat,
-        password, // ⚠️ sebaiknya di-hash untuk real production
+        password, // ⚠ sebaiknya di-hash untuk real production
         createdAt: Timestamp.now(),
       });
+
+      await updateDoc(docRef, { docId: docRef.id });
+
+      localStorage.setItem(
+        "registrasi",
+        JSON.stringify({
+          docId: docRef.id,
+          tanggalLahir: Timestamp.fromDate(new Date(tanggalLahir)),
+          wali,
+          nomor,
+          email,
+          alamat,
+          password, // ⚠ sebaiknya di-hash untuk real production
+          createdAt: Timestamp.now(),
+        })
+      );
 
       setSuccess(true);
       setLoading(false);
@@ -160,9 +176,13 @@ export default function RegisterPage() {
       {success && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
           <div className="bg-white p-8 rounded-2xl shadow-2xl text-center max-w-sm w-full animate-bounce">
-            <h2 className="text-2xl font-bold text-green-600 mb-4">🎉 Berhasil!</h2>
+            <h2 className="text-2xl font-bold text-green-600 mb-4">
+              🎉 Berhasil!
+            </h2>
             <p className="text-gray-700 mb-2">Registrasi berhasil dilakukan.</p>
-            <p className="text-gray-500 text-sm">Anda akan diarahkan ke halaman login...</p>
+            <p className="text-gray-500 text-sm">
+              Anda akan diarahkan ke halaman login...
+            </p>
           </div>
         </div>
       )}

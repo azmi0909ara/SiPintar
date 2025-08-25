@@ -2,15 +2,24 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  doc,
+  serverTimestamp,
+  setDoc,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../lib/firebaseConfig";
 
 interface UserProfile {
-  uid?: string;
+  docId: string;
   email: string;
+  namaAnak?: string;
   nama?: string;
   role: string;
   kelas?: string;
-  nomor?: string; // nomor telepon (string)
-  tanggalLahir?: number; // timestamp dari database
+  nomor?: string;
+  tanggalLahir?: number;
   alamat?: string;
 }
 
@@ -21,17 +30,27 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const parsed: UserProfile = JSON.parse(storedUser);
 
-      // kalau tanggalLahir masih string → parse ke number
-      if (parsed.tanggalLahir && typeof parsed.tanggalLahir === "string") {
-        parsed.tanggalLahir = Number(parsed.tanggalLahir);
+    console.log("Stored user: ", storedUser);
+
+    if (storedUser) {
+      const parsed: any = JSON.parse(storedUser);
+
+      // konversi tanggal lahir Firestore Timestamp ke number (ms)
+      if (parsed.tanggalLahir) {
+        if (
+          typeof parsed.tanggalLahir === "object" &&
+          parsed.tanggalLahir.seconds
+        ) {
+          parsed.tanggalLahir = parsed.tanggalLahir.seconds * 1000;
+        } else if (typeof parsed.tanggalLahir === "string") {
+          parsed.tanggalLahir = Number(parsed.tanggalLahir);
+        }
       }
 
       setProfile(parsed);
     } else {
-      router.push("/login"); // jika belum login diarahkan ke login
+      router.push("/login");
     }
   }, [router]);
 
@@ -40,42 +59,59 @@ export default function ProfilePage() {
     router.push("/login");
   };
 
-  const handleUpdateKelas = (kelas: string) => {
-    if (profile) {
-      const updated = { ...profile, kelas };
+  // simpan perubahan profile ke localStorage
+  const saveProfile = async (updated: UserProfile & { docId?: string }) => {
+    console.log("docid: ", updated);
+
+    try {
+      if (!updated.docId) {
+        throw new Error(
+          "User tidak punya docId. Pastikan disimpan saat registrasi."
+        );
+      }
+
+      // update Firestore pakai docId, bukan uid
+      const userRef = doc(db, "registrasi", updated.docId);
+
+      await setDoc(
+        userRef,
+        {
+          namaAnak: updated.namaAnak ?? null,
+          role: updated.role ?? "user",
+          kelas: updated.kelas ?? null,
+          nomor: updated.nomor ?? null,
+          tanggalLahir: updated.tanggalLahir
+            ? Timestamp.fromMillis(updated.tanggalLahir)
+            : null,
+          alamat: updated.alamat ?? null,
+          email: updated.email,
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true }
+      );
+
+      // update localStorage juga
       setProfile(updated);
       localStorage.setItem("user", JSON.stringify(updated));
+
+      console.log("✅ Profil berhasil diupdate ke Firestore");
+    } catch (error) {
+      console.error("❌ Gagal update profil:", error);
     }
   };
 
-  const handleUpdateTanggalLahir = (value: string) => {
-    if (profile) {
-      const timestamp = value ? new Date(value).getTime() : undefined;
-      const updated = { ...profile, tanggalLahir: timestamp };
-      setProfile(updated);
-      localStorage.setItem("user", JSON.stringify(updated));
-    }
-  };
-
-  // helper format untuk display tanggal
   const formatTanggal = (timestamp?: number) => {
     if (!timestamp || isNaN(timestamp)) return "-";
-    const date = new Date(timestamp);
-    return date.toLocaleDateString("id-ID", {
+    return new Date(timestamp).toLocaleDateString("id-ID", {
       day: "2-digit",
       month: "long",
       year: "numeric",
     });
   };
 
-  // helper untuk input type=date
   const toInputDate = (timestamp?: number) => {
     if (!timestamp || isNaN(timestamp)) return "";
-    try {
-      return new Date(timestamp).toISOString().split("T")[0];
-    } catch {
-      return "";
-    }
+    return new Date(timestamp).toISOString().split("T")[0];
   };
 
   if (!profile) {
@@ -89,22 +125,19 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen w-full bg-gray-50 text-gray-900 p-6 md:p-12 lg:p-20 pt-16 md:pt-28">
       <div className="max-w-4xl mx-auto space-y-8 pt-10">
-        {/* Header */}
         <h1 className="text-3xl font-bold text-center">Profil Saya</h1>
 
         {/* Card Profile */}
         <div className="bg-white shadow-xl rounded-2xl p-6 md:p-10">
           <div className="flex flex-col md:flex-row items-center gap-6">
-            {/* Foto Profil (Inisial Nama) */}
             <div className="w-32 h-32 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white text-4xl font-bold">
               {profile?.nama?.[0] || "U"}
             </div>
 
-            {/* Info User */}
             <div className="flex-1 space-y-4">
               <div>
                 <h2 className="text-2xl font-semibold">
-                  {profile.nama || "User"}
+                  {profile.namaAnak || "User"}
                 </h2>
                 <p className="text-gray-600">
                   {profile.kelas
@@ -137,7 +170,7 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Mode Edit */}
+        {/* Edit Mode */}
         {editMode && (
           <div className="bg-white shadow rounded-2xl p-6 space-y-4">
             <h3 className="text-lg font-semibold mb-3">Edit Profil</h3>
@@ -147,7 +180,9 @@ export default function ProfilePage() {
               <label className="text-sm text-gray-600">Kelas</label>
               <select
                 value={profile.kelas || ""}
-                onChange={(e) => handleUpdateKelas(e.target.value)}
+                onChange={(e) =>
+                  setProfile({ ...profile, kelas: e.target.value })
+                }
                 className="w-full border rounded-xl px-4 py-2 mt-1"
               >
                 <option value="">-- Pilih Kelas --</option>
@@ -165,8 +200,15 @@ export default function ProfilePage() {
               <input
                 type="date"
                 className="w-full border rounded-xl px-3 py-2 mt-1"
-                defaultValue={toInputDate(profile.tanggalLahir)}
-                onChange={(e) => handleUpdateTanggalLahir(e.target.value)}
+                value={toInputDate(profile.tanggalLahir)}
+                onChange={(e) =>
+                  setProfile({
+                    ...profile,
+                    tanggalLahir: e.target.value
+                      ? new Date(e.target.value).getTime()
+                      : undefined,
+                  })
+                }
               />
             </div>
           </div>
@@ -176,7 +218,12 @@ export default function ProfilePage() {
         <div className="flex justify-center gap-4">
           <button
             className="px-6 py-3 rounded-xl bg-indigo-600 text-white font-semibold shadow hover:bg-indigo-700 transition"
-            onClick={() => setEditMode((prev) => !prev)}
+            onClick={() => {
+              if (editMode && profile) {
+                saveProfile(profile); // commit ke localStorage
+              }
+              setEditMode((prev) => !prev);
+            }}
           >
             {editMode ? "Simpan" : "Edit Profil"}
           </button>
@@ -188,6 +235,6 @@ export default function ProfilePage() {
           </button>
         </div>
       </div>
-    </div>
-  );
+    </div>
+  );
 }
