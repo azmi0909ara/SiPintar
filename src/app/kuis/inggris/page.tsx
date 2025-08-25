@@ -20,7 +20,7 @@ export default function QuizInggris() {
   const startQuiz = () => {
     const shuffled = [...InggrisQuestions]
       .sort(() => Math.random() - 0.5)
-      .slice(0, 30);
+      .slice(0, 10);
 
     setShuffledQuestions(shuffled);
     setAnswers(Array(shuffled.length).fill(null));
@@ -63,7 +63,7 @@ export default function QuizInggris() {
             Kuis Bahasa Inggris
           </h1>
           <p className="text-gray-700 mb-6 text-lg">
-            Kuis ini terdiri dari 30 soal yang diacak dari total 45 soal.  
+            Kuis ini terdiri dari 10 soal yang diacak dari total 45 soal.  
             Anda memiliki maksimal <span className="font-bold">3 kali percobaan</span>.
           </p>
 
@@ -100,7 +100,7 @@ export default function QuizInggris() {
                   >
                     <span>Percobaan {res.attempt}</span>
                     <span className="font-semibold text-red-600">
-                      Skor: {res.score} / 30
+                      Skor: {res.score} / 10
                     </span>
                   </li>
                 ))}
