@@ -124,30 +124,29 @@ export default function QuizIndonesia() {
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-blue-50 to-indigo-100 px-4 md:px-12 pt-28 pb-10 gap-6">
       {/* Sidebar */}
-   <div className="w-full bg-white rounded-2xl shadow-lg p-4 mb-6">
-  <h2 className="text-base sm:text-lg font-bold text-indigo-700 mb-4 text-center">
-    Nomor Soal
-  </h2>
-  <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-2 sm:gap-3 justify-items-center">
-    {shuffledQuestions.map((_, idx) => (
-      <button
-        key={idx}
-        onClick={() => setCurrentQuestion(idx)}
-        className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-semibold text-xs sm:text-sm transition
-          ${
-            idx === currentQuestion
-              ? "bg-indigo-600 text-white"
-              : answers[idx]
-              ? "bg-green-500 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-          }`}
-      >
-        {idx + 1}
-      </button>
-    ))}
-  </div>
-</div>
-
+      <div className="w-full md:w-1/4 bg-white rounded-2xl shadow-lg p-4 h-max top-28">
+        <h2 className="text-base sm:text-lg font-bold text-indigo-700 mb-4 text-center">
+          Nomor Soal
+        </h2>
+        <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-5 gap-2 sm:gap-3">
+          {shuffledQuestions.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentQuestion(idx)}
+              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-semibold text-xs sm:text-sm transition
+                ${
+                  idx === currentQuestion
+                    ? "bg-indigo-600 text-white"
+                    : answers[idx]
+                    ? "bg-green-500 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+            >
+              {idx + 1}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* Area Utama */}
       <div className="flex-1 bg-white rounded-2xl shadow-xl p-4 sm:p-6 flex flex-col justify-between">
