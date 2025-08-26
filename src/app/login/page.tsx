@@ -18,8 +18,13 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // 🔴 Validasi wajib isi
     if (!email) {
       setError("Email harus diisi");
+      return;
+    }
+    if (!password) {
+      setError("Password harus diisi");
       return;
     }
 
@@ -27,34 +32,34 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      if (password) {
-        try {
-          const adminLogin = await signInWithEmailAndPassword(auth, email, password);
-          if (adminLogin.user) {
-            localStorage.setItem(
-              "user",
-              JSON.stringify({
-                uid: adminLogin.user.uid,
-                email: adminLogin.user.email,
-                role: "admin",
-              })
-            );
+      // ✅ Coba login admin
+      try {
+        const adminLogin = await signInWithEmailAndPassword(auth, email, password);
+        if (adminLogin.user) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              uid: adminLogin.user.uid,
+              email: adminLogin.user.email,
+              role: "admin",
+            })
+          );
 
-            setPopupMessage("🎉 Selamat datang Admin di SiPintar!");
-            setShowPopup(true);
+          setPopupMessage("🎉 Selamat datang Admin di SiPintar!");
+          setShowPopup(true);
 
-            setTimeout(() => {
-              setShowPopup(false);
-              router.push("/admin");
-            }, 2000);
+          setTimeout(() => {
+            setShowPopup(false);
+            router.push("/admin");
+          }, 2000);
 
-            return;
-          }
-        } catch (err) {
-          console.log("Admin login gagal:", err);
+          return;
         }
+      } catch (err) {
+        console.log("Admin login gagal:", err);
       }
 
+      // ✅ Cek user biasa
       const q = query(collection(db, "registrasi"), where("email", "==", email));
       const querySnapshot = await getDocs(q);
 
@@ -90,6 +95,7 @@ export default function LoginPage() {
         {error && <p className="text-red-400 mb-4 sm:mb-6 text-center text-base sm:text-lg">{error}</p>}
 
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+          {/* Input Email */}
           <div>
             <label className="block mb-1 sm:mb-2 font-semibold text-white text-base sm:text-lg">Email</label>
             <input
@@ -97,10 +103,15 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full border border-white/50 rounded-2xl px-4 sm:px-5 py-2.5 sm:py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-300 bg-white/20 text-white placeholder-white/70 transition transform hover:scale-[1.02]"
+              className={`w-full border rounded-2xl px-4 sm:px-5 py-2.5 sm:py-3 text-base sm:text-lg 
+                focus:outline-none focus:ring-2 focus:ring-blue-300 bg-white/20 text-white placeholder-white/70 
+                transition transform hover:scale-[1.02] ${
+                  !email && error.includes("Email") ? "border-red-500" : "border-white/50"
+                }`}
             />
           </div>
 
+          {/* Input Password */}
           <div>
             <label className="block mb-1 sm:mb-2 font-semibold text-white text-base sm:text-lg">Password</label>
             <input
@@ -108,10 +119,15 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="w-full border border-white/50 rounded-2xl px-4 sm:px-5 py-2.5 sm:py-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-300 bg-white/20 text-white placeholder-white/70 transition transform hover:scale-[1.02]"
+              className={`w-full border rounded-2xl px-4 sm:px-5 py-2.5 sm:py-3 text-base sm:text-lg 
+                focus:outline-none focus:ring-2 focus:ring-blue-300 bg-white/20 text-white placeholder-white/70 
+                transition transform hover:scale-[1.02] ${
+                  !password && error.includes("Password") ? "border-red-500" : "border-white/50"
+                }`}
             />
           </div>
 
+          {/* Tombol Login */}
           <button
             type="submit"
             disabled={loading}
