@@ -102,43 +102,6 @@ export default function ReportsPage() {
             </BarChart>
           </ResponsiveContainer>
         </div>
-
-        {/* Pengumuman */}
-        <div className="bg-white p-6 rounded-xl shadow-lg">
-          <h2 className="text-black text-xl font-semibold mb-4">Pengumuman</h2>
-
-          <div className="text-black mb-6 space-y-3">
-            <input
-              type="text"
-              placeholder="Judul Pengumuman"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg"
-            />
-            <textarea
-              placeholder="Isi Pengumuman"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg"
-              rows={4}
-            />
-            <button
-              onClick={addAnnouncement}
-              className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
-            >
-              Tambah Pengumuman
-            </button>
-          </div>
-
-          <div className="space-y-4">
-            {announcements.map((a) => (
-              <div key={a.id} className="text-black p-4 bg-gray-100 rounded-lg">
-                <h3 className="font-bold">{a.title}</h3>
-                <p>{a.content}</p>
-              </div>
-            ))}
-          </div>
-        </div>
       </main>
     </div>
   );

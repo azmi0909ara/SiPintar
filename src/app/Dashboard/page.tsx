@@ -1,51 +1,82 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import About from "@/Components/Home/About/About";
+import Course from "@/Components/Home/Course/Course";
+import Feature from "@/Components/Home/Feature/Feature";
+import Review from "@/Components/Home/Review/Review";
+import Article from "@/Components/Home/Article/Article";
+import "aos/dist/aos.css";
 
 export default function DashboardPage() {
   const router = useRouter();
 
+  useEffect(() => {
+    // Init AOS
+    const initAOS = async () => {
+      if (typeof window !== "undefined") {
+        const AOS = (await import("aos")).default;
+        AOS.init({
+          duration: 1000,
+          easing: "ease",
+          once: true,
+          anchorPlacement: "top-bottom",
+        });
+      }
+    };
+    initAOS();
+  }, []);
+
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-purple-900 to-pink-800 overflow-hidden p-4 sm:p-8 lg:p-16">
-      {/* Hero Card */}
-      <div className="relative z-10 w-full sm:w-[90%] lg:w-[70%] flex flex-col items-start space-y-6 sm:space-y-8 backdrop-blur-xl bg-white/10 rounded-2xl shadow-2xl p-6 sm:p-10 lg:p-16">
-        
-        {/* Hero Text */}
-        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold leading-snug text-white drop-shadow-lg text-center sm:text-left">
-          <span className="bg-gradient-to-r from-green-400 via-blue-300 to-purple-400 bg-clip-text text-transparent">
-            Belajar Pintar,
-          </span>
-          <br />
-          Raih Prestasi
-          <br />
-          Bersama{" "}
-          <span className="text-yellow-400 drop-shadow-md">SiPintar</span>
-        </h1>
+    <div className="w-full min-h-screen">
+      {/* ================= HERO SECTION ================= */}
+      <div className="relative min-h-screen flex items-center justify-start bg-gradient-to-br from-white via-gray-100 to-gray-300 p-6 sm:p-12 lg:p-20">
+        <div className="relative z-10 max-w-3xl flex flex-col items-start space-y-6">
+          {/* Title */}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight text-gray-800">
+            <span className="text-blue-600">Belajar Pintar,</span>
+            <br />
+            Raih Prestasi
+            <br />
+            Bersama{" "}
+            <span className="text-indigo-600 drop-shadow-sm">SiPintar</span>
+          </h1>
 
-        <p className="text-white/90 text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl text-center sm:text-left">
-          Platform pembelajaran digital untuk anak-anak SD kelas 1–6. Belajar
-          jadi lebih menyenangkan, interaktif, dan bisa diakses kapan saja,{" "}
-          <span className="font-semibold text-green-300">SiPintar</span> adalah
-          partner terbaik dalam perjalanan pendidikan Anda.
-        </p>
+          {/* Description */}
+          <p className="text-gray-700 text-base sm:text-lg md:text-xl leading-relaxed">
+            Platform pembelajaran digital untuk anak-anak SD kelas 1–6. Belajar
+            jadi lebih menyenangkan, interaktif, dan bisa diakses kapan saja.{" "}
+            <span className="font-semibold text-blue-600">SiPintar</span>{" "}
+            adalah partner terbaik dalam perjalanan pendidikan Anda.
+          </p>
 
-        {/* Tombol Aksi */}
-        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 mt-6 w-full sm:w-auto justify-center sm:justify-start">
-          <button
-            onClick={() => router.push("/login")}
-            className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-4 rounded-lg font-medium text-white bg-gradient-to-r from-green-700 to-blue-700 hover:from-green-600 hover:to-blue-600 shadow-lg transform hover:scale-105 transition-all duration-300"
-          >
-            🚀 Mulai Belajar
-          </button>
+          {/* Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 mt-4">
+            <button
+              onClick={() => router.push("/login")}
+              className="px-8 py-3 rounded-lg font-medium text-white bg-blue-600 hover:bg-blue-500 shadow-md transition-all duration-300"
+            >
+              🚀 Mulai Belajar
+            </button>
 
-          <button
-            onClick={() => router.push("/register")}
-            className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-4 rounded-lg font-medium text-white bg-gradient-to-r from-red-700 to-pink-700 hover:from-red-600 hover:to-pink-600 shadow-lg transform hover:scale-105 transition-all duration-300"
-          >
-            Register
-          </button>
+            <button
+              onClick={() => router.push("/register")}
+              className="px-8 py-3 rounded-lg font-medium text-white bg-gray-800 hover:bg-gray-700 shadow-md transition-all duration-300"
+            >
+              Register
+            </button>
+          </div>
         </div>
+      </div>
+
+      {/* ================= HOME SECTIONS ================= */}
+      <div>
+        <About />
+        <Course />
+        <Feature />
+        <Review />
+        <Article />
       </div>
     </div>
   );

@@ -8,26 +8,6 @@ const HeroContent = () => {
   const router = useRouter();
   const [announcement, setAnnouncement] = useState<string | null>(null);
 
-  // Ambil pengumuman terbaru
-  useEffect(() => {
-    const fetchAnnouncement = async () => {
-      try {
-        const q = query(
-          collection(db, "pengumuman"),
-          orderBy("createdAt", "desc"),
-          limit(1)
-        );
-        const snap = await getDocs(q);
-        if (!snap.empty) {
-          const latest = snap.docs[0].data();
-          setAnnouncement(latest.content);
-        }
-      } catch (err) {
-        console.error("Gagal ambil pengumuman:", err);
-      }
-    };
-    fetchAnnouncement();
-  }, []);
 
   return (
     <div className="text-center md:text-left">

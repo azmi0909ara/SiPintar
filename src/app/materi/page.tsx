@@ -10,15 +10,6 @@ import Inggris2, { Inggris2Metadata } from './Inggris2';
 import Indonesia3 from './Indonesia3';
 import Pancasila3 from './Pancasila3';
 import Inggris3 from './Inggris3';
-import Indonesia4 from './Indonesia4';
-import Pancasila4 from './Pancasila4';
-import Inggris4 from './Inggris4';
-import Indonesia5 from './Indonesia5';
-import Pancasila5 from './Pancasila5';
-import Inggris5 from './Inggris5';
-import Indonesia6 from './Indonesia6';
-import Pancasila6 from './Pancasila6';
-import Inggris6 from './Inggris6';
 import { cardData, type CardDataItem, type OverlayContentItem } from './CardData';
 
 export default function MateriPage() {
