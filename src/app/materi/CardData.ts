@@ -7,15 +7,7 @@ import { Inggris2Metadata } from './Inggris2';
 import { Indonesia3Metadata } from './Indonesia3';
 import { Pancasila3Metadata } from './Pancasila3';
 import { Inggris3Metadata } from './Inggris3';
-import { Indonesia4Metadata } from './Indonesia4';
-import { Pancasila4Metadata } from './Pancasila4';
-import { Inggris4Metadata } from './Inggris4';
-import { Indonesia5Metadata } from './Indonesia5';
-import { Pancasila5Metadata } from './Pancasila5';
-import { Inggris5Metadata } from './Inggris5';
-import { Indonesia6Metadata } from './Indonesia6';
-import { Pancasila6Metadata } from './Pancasila6';
-import { Inggris6Metadata } from './Inggris6';
+
 
 export interface SimpleTopic {
   title: string;
@@ -48,13 +40,4 @@ export const cardData: CardDataItem[] = [
   Indonesia3Metadata as CardDataItem,
   Pancasila3Metadata as CardDataItem,
   Inggris3Metadata as CardDataItem,
-  Indonesia4Metadata as CardDataItem,
-  Pancasila4Metadata as CardDataItem,
-  Inggris4Metadata as CardDataItem,
-  Indonesia5Metadata as CardDataItem,
-  Pancasila5Metadata as CardDataItem,
-  Inggris5Metadata as CardDataItem,
-  Indonesia6Metadata as CardDataItem,
-  Pancasila6Metadata as CardDataItem,
-  Inggris6Metadata as CardDataItem,
 ];
